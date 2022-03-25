@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Iler22/Social-Network-API#readme",
   "dependencies": {
+    "dayjs": "^1.11.0",
     "express": "^4.17.3",
     "mongoose": "^6.2.8"
   }
