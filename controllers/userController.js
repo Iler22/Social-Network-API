@@ -11,6 +11,20 @@ const getUsers = async (req, res) => {
   }
 };
 
+const getSingleUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.params.userId })
+      .select('-__v')
+      .populate('friends')
+      .populate('thoughts');
+    res.json(user);
+    console.log('Got a single user');
+  } catch (err) {
+    res.sendStatus(500).send(err);
+    console.log(`Failed to get a single user! ${err.message}`);
+  }
+};
+
 const createUser = async (req, res) => {
   try {
     const user = await User.create(req.body);
@@ -25,4 +39,5 @@ const createUser = async (req, res) => {
 module.exports = {
   getUsers,
   createUser,
+  getSingleUser,
 };
