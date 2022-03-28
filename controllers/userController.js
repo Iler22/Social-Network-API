@@ -36,8 +36,36 @@ const createUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $set: req.body },
+      { runValidators: true, new: true }
+    );
+    res.json(user);
+    console.log('Updated user');
+  } catch (err) {
+    res.sendStatus(500).send(err);
+    console.log(`Failed to update user! ${err.message}`);
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findOneAndDelete({ _id: req.params.userId });
+    res.json(user);
+    console.log('Updated user');
+  } catch (err) {
+    res.sendStatus(500).send(err);
+    console.log(`Failed to delete user! ${err.message}`);
+  }
+};
+
 module.exports = {
   getUsers,
   createUser,
   getSingleUser,
+  updateUser,
+  deleteUser,
 };
