@@ -11,6 +11,17 @@ const getThoughts = async (req, res) => {
   }
 };
 
+const getSingleThought = async (req, res) => {
+  try {
+    const thought = await Thought.findOne({ _id: req.params.thoughtId });
+    res.json(thought);
+    console.log('Got a single thought');
+  } catch (err) {
+    res.sendStatus(500).send(err);
+    console.log(`Failed to get a single thought! ${err.message}`);
+  }
+};
+
 const createThought = async (req, res) => {
   try {
     const thought = await Thought.create(req.body);
@@ -20,11 +31,11 @@ const createThought = async (req, res) => {
       { new: true }
     );
     res.json(user);
-    console.log('Created a new user');
+    console.log('Created a thought');
   } catch (err) {
     res.sendStatus(500).send(err);
-    console.log(`Failed to create a new user! ${err.message}`);
+    console.log(`Failed to create a thought! ${err.message}`);
   }
 };
 
-module.exports = { getThoughts, createThought };
+module.exports = { getThoughts, getSingleThought, createThought };
