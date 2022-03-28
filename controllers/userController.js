@@ -62,10 +62,26 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const addFriend = async (req, res) => {
+  try {
+    const friend = await User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $addToSet: { friends: req.params.friendId } },
+      { new: true }
+    );
+    res.json(friend);
+    console.log('Added friend');
+  } catch (err) {
+    res.sendStatus(500).send(err);
+    console.log(`Failed add friend! ${err.message}`);
+  }
+};
+
 module.exports = {
   getUsers,
   createUser,
   getSingleUser,
   updateUser,
   deleteUser,
+  addFriend,
 };
