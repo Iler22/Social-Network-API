@@ -15,8 +15,8 @@ const getSingleUser = async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.params.userId })
       .select('-__v')
-      .populate('friends')
-      .populate('thoughts');
+      .populate('thoughts')
+      .populate('friends');
     res.json(user);
     console.log('Got a single user');
   } catch (err) {
@@ -77,6 +77,21 @@ const addFriend = async (req, res) => {
   }
 };
 
+const deleteFriend = async (req, res) => {
+  try {
+    const friend = await User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $pull: { friends: req.params.friendId } },
+      { new: true }
+    );
+    res.json(friend);
+    console.log('Removed friend');
+  } catch (err) {
+    res.sendStatus(500).send(err);
+    console.log(`Failed to remove friend! ${err.message}`);
+  }
+};
+
 module.exports = {
   getUsers,
   createUser,
@@ -84,4 +99,5 @@ module.exports = {
   updateUser,
   deleteUser,
   addFriend,
+  deleteFriend,
 };
