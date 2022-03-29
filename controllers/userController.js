@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const { User, Thought } = require('../models');
 
 const getUsers = async (req, res) => {
   try {
@@ -6,7 +6,7 @@ const getUsers = async (req, res) => {
     res.json(users);
     console.log('Got all users');
   } catch (err) {
-    res.sendStatus(500).send(err);
+    res.status(500).json(err);
     console.log(`Failed to get all users! ${err.message}`);
   }
 };
@@ -20,7 +20,7 @@ const getSingleUser = async (req, res) => {
     res.json(user);
     console.log('Got a single user');
   } catch (err) {
-    res.sendStatus(500).send(err);
+    res.status(500).json(err);
     console.log(`Failed to get a single user! ${err.message}`);
   }
 };
@@ -31,7 +31,7 @@ const createUser = async (req, res) => {
     res.json(user);
     console.log('Created a new user');
   } catch (err) {
-    res.sendStatus(500).send(err);
+    res.status(500).json(err);
     console.log(`Failed to create a new user! ${err.message}`);
   }
 };
@@ -46,7 +46,7 @@ const updateUser = async (req, res) => {
     res.json(user);
     console.log('Updated user');
   } catch (err) {
-    res.sendStatus(500).send(err);
+    res.status(500).json(err);
     console.log(`Failed to update user! ${err.message}`);
   }
 };
@@ -54,11 +54,12 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const user = await User.findOneAndDelete({ _id: req.params.userId });
+    await Thought.deleteMany({ _id: { $in: user.thoughts } });
     res.json(user);
-    console.log('Updated user');
+    console.log('Deleted user and thoughts');
   } catch (err) {
-    res.sendStatus(500).send(err);
-    console.log(`Failed to delete user! ${err.message}`);
+    res.status(500).json(err);
+    console.log(`Failed to delete user and thoughts! ${err.message}`);
   }
 };
 
@@ -72,7 +73,7 @@ const addFriend = async (req, res) => {
     res.json(friend);
     console.log('Added friend');
   } catch (err) {
-    res.sendStatus(500).send(err);
+    res.status(500).json(err);
     console.log(`Failed add friend! ${err.message}`);
   }
 };
@@ -87,7 +88,7 @@ const deleteFriend = async (req, res) => {
     res.json(friend);
     console.log('Removed friend');
   } catch (err) {
-    res.sendStatus(500).send(err);
+    res.status(500).json(err);
     console.log(`Failed to remove friend! ${err.message}`);
   }
 };
