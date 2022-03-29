@@ -53,9 +53,28 @@ const updateThought = async (req, res) => {
   }
 };
 
+const deleteThought = async (req, res) => {
+  try {
+    const thought = await Thought.findByIdAndRemove({
+      _id: req.params.thoughtId,
+    });
+    await User.findOneAndUpdate(
+      { thoughts: req.params.thoughtId },
+      { $pull: { thoughts: req.params.thoughtId } },
+      { new: true }
+    );
+    res.json(thought);
+    console.log('Thought has been deleted');
+  } catch (err) {
+    res.sendStatus(500).send(err);
+    console.log(`Failed to delete thought! ${err.message}`);
+  }
+};
+
 module.exports = {
   getThoughts,
   getSingleThought,
   createThought,
   updateThought,
+  deleteThought,
 };
