@@ -27,7 +27,7 @@ const createThought = async (req, res) => {
     const thought = await Thought.create(req.body);
     const user = await User.findOneAndUpdate(
       { _id: req.body.userId },
-      { $addToSet: { thoughts: thought._id } },
+      { $push: { thoughts: thought._id } },
       { new: true }
     );
     res.json(user);
@@ -38,4 +38,24 @@ const createThought = async (req, res) => {
   }
 };
 
-module.exports = { getThoughts, getSingleThought, createThought };
+const updateThought = async (req, res) => {
+  try {
+    const thought = await Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $set: req.body },
+      { runValidators: true, new: true }
+    );
+    res.json(thought);
+    console.log('Updated thought');
+  } catch (err) {
+    res.sendStatus(500).send(err);
+    console.log(`Failed to update thought! ${err.message}`);
+  }
+};
+
+module.exports = {
+  getThoughts,
+  getSingleThought,
+  createThought,
+  updateThought,
+};
