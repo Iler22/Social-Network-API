@@ -14,7 +14,7 @@ https://drive.google.com/drive/folders/1vzsAYgda2TFdgO3YRoBkQVOa9zqIY7ox?usp=sha
 
 ## Screenshot
 
-![Social Network Api screenshot]
+![Social Network Api](https://user-images.githubusercontent.com/89151536/161091024-3924b842-0438-42f8-89db-3e2d10cff437.png)
 
 ## Table of Contents
 
